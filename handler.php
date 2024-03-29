@@ -97,12 +97,60 @@ class ArithmeticProgressionCalculator {
         echo "<br/>";
         return $progression;
     }
+}
 
-    public function calculateSum() {
-        $sum = ($this->numTerms / 2) * (2 * $this->firstTerm + ($this->numTerms - 1) * $this->commonDifference);
-        echo $sum;
-        return $sum;
+class CollatzHistogramCalculator extends RangeCalculator {
+
+    public static function calculateRange($start, $finish)
+    {
+        $iterations = [];
+        for ($i = $start; $i <= $finish; $i++) {
+            $collatzCalculator = new CollatzCalculator($i);
+            $collatzResult = $collatzCalculator->calculateCollatz();
+
+            $iterations[$i] = $collatzResult['iterations'];
+        }
+        return $iterations;
+    }
+
+    public static function displayHistogram($iterations) {
+        $labels = array_keys($iterations);
+        $data = array_values($iterations);
+
+        $dataJSON = json_encode($data);
+        $labelsJSON = json_encode($labels);
+
+        echo "
+        <div style='position: absolute; top: 10px; right: 10px; width: 1000px; height: 1000px;'>
+            <canvas id='collatzHistogram'></canvas>
+        </div>
+        <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
+        <script>
+            var ctx = document.getElementById('collatzHistogram').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: $labelsJSON,
+                    datasets: [{
+                        label: 'Iterations',
+                        data: $dataJSON,
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        </script>";
     }
 }
+
+
 
 ?>
