@@ -1,12 +1,11 @@
 <?php
 
-require_once('functions.php');
+require_once('handler.php');
 
 $start = $_POST["start"];
 $finish = $_POST["finish"];
 
-$results = calculateRange($start, $finish);
-
-findMinMaxIterations($results);
+$results = RangeCalculator::calculateRange($start, $finish);
+RangeCalculator::findMinMaxIterations($results);
 
 ?>

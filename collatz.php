@@ -1,8 +1,12 @@
 <?php
 
-require_once('functions.php');
+require_once('handler.php');
 
 $number = $_POST["number"];
-collatz($number);
+$collatzCalculator = new CollatzCalculator($number);
+
+$collatzResult = $collatzCalculator->calculateCollatz();
+
+
 
 ?>
